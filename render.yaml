@@ -5,6 +5,7 @@ services:
     buildCommand: |
       pip install --force-reinstall -r requirements.txt
       python -c "import os; print('Python version:', os.sys.version)"  # Verify Python
+      python -c "import surprise; print('Surprise installed!')"
     startCommand: gunicorn --bind 0.0.0.0:$PORT app:app  # Critical for port binding
     envVars:
       - key: FLASK_SECRET_KEY
