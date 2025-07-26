@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    {% if course %}
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{ course.title }}</h1>
+            <h4 class="text-muted">{{ course.organization }}</h4>
+            
+            <div class="my-3">
+                <span class="badge bg-primary">{{ course.certificate_type }}</span>
+                <span class="badge bg-info text-dark">{{ course.difficulty }}</span>
+                <span class="badge bg-warning text-dark">★ {{ course.rating|round(1) }}</span>
+                <span class="badge bg-secondary">{{ course.duration }}</span>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">About This Course</h5>
+                    <p class="card-text">{{ course.description }}</p>
+                    
+                    {% if course.summary %}
+                    <h6>What You'll Learn</h6>
+                    <ul class="list-unstyled">
+                        {% for item in course.summary %}
+                        <li class="mb-2">
+                            {% set clean_item = item.replace('\xa0', ' ').strip() %}
+                            {% if clean_item and clean_item|length > 1 %}
+                                • {{ clean_item }}
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    
+                    {% if course.skills %}
+                    <h6>Skills You'll Gain</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for skill in course.skills %}
+                        <span class="badge bg-light text-dark">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="d-grid gap-2 d-md-block mb-4">
+                <a href="{{ course.url }}" class="btn btn-primary" target="_blank">Visit Course</a>
+                <a href="{{ url_for('recommendations') }}" class="btn btn-outline-secondary">Back to Recommendations</a>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            {% if similar_courses %}
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Similar Courses</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    {% for similar in similar_courses %}
+                    <a href="{{ url_for('course_detail', course_id=similar.course_id) }}" 
+                       class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ similar.course_title }}</h6>
+                            <small class="text-muted">★ {{ similar.course_rating|round(1) }}</small>
+                        </div>
+                        <small class="text-muted">{{ similar.course_organization }}</small>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Course Stats</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Students Enrolled
+                            <span class="badge bg-primary rounded-pill">
+                                {{ "{:,}".format(course.students_enrolled|round|int) }}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Reviews
+                            <span class="badge bg-primary rounded-pill">
+                                {{ "{:,}".format(course.reviews|int) }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-danger">
+        <h4>Course Not Found</h4>
+        <p>The requested course could not be loaded.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Return Home</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

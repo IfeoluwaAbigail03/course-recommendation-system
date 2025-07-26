@@ -1,0 +1,125 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.search-container {
+    position: relative;
+}
+
+#search-results {
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.25rem;
+    background-color: white;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: #212529;
+    text-decoration: none;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Course Cards */
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-footer {
+    border-top: none;
+    background-color: rgba(0,0,0,0.03);
+}
+
+/* Course Detail Page Enhancements */
+.course-stats .list-group-item {
+    padding: 0.75rem 1.25rem;
+}
+
+.badge.bg-light {
+    margin-bottom: 0.25rem;
+}
+
+.card-header h5 {
+    font-size: 1.1rem;
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+/* Course Meta Badges */
+.course-meta-badges .badge {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .course-meta-badges .badge {
+        display: block;
+        margin-bottom: 0.5rem;
+        width: 100%;
+    }
+}
+
+/* Custom colors */
+.bg-primary {
+    background-color: #3f51b5 !important;
+}
+
+.btn-primary {
+    background-color: #3f51b5;
+    border-color: #3f51b5;
+}
+
+.btn-primary:hover {
+    background-color: #303f9f;
+    border-color: #303f9f;
+}
+
+.btn-outline-primary {
+    color: #3f51b5;
+    border-color: #3f51b5;
+}
+
+.btn-outline-primary:hover {
+    background-color: #3f51b5;
+    border-color: #3f51b5;
+    color: white;
+}
+
+/* Error and Alert Styling */
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+/* List Group Items */
+.list-group-item-action:hover {
+    background-color: #f8f9fa;
+}

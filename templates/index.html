@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Find Your Perfect Course</h1>
+    
+    <!-- Search Bar -->
+    <div class="search-container mb-5">
+        <div class="input-group">
+            <input type="text" id="course-search" class="form-control" placeholder="Search courses...">
+            <button class="btn btn-primary" type="button" id="search-button">Search</button>
+        </div>
+        <div id="search-results" class="dropdown-menu w-100"></div>
+    </div>
+    
+    <!-- Browse All Link -->
+    <div class="text-center mb-4">
+        <a href="{{ url_for('browse_courses') }}" class="btn btn-outline-primary">Browse All Courses</a>
+    </div>
+    
+    <!-- Popular Courses -->
+    <h2 class="mb-3">Popular Courses</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for course in popular_courses %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course['course_title'] }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ course['course_organization'] }}</h6>
+                    <div class="mb-2">
+                        <span class="badge bg-info text-dark">{{ course['course_difficulty'] }}</span>
+                        <span class="badge bg-warning text-dark">★ {{ course['course_rating']|round(1) }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{{ url_for('course_detail', course_id=course['course_id']) }}" class="btn btn-sm btn-info">View Details</a>
+                    <a href="{{ course['course_url'] }}" class="btn btn-sm btn-primary" target="_blank">Visit Course</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.getElementById('course-search').addEventListener('input', function() {
+    const query = this.value;
+    const resultsContainer = document.getElementById('search-results');
+    
+    if (query.length < 2) {
+        resultsContainer.innerHTML = '';
+        resultsContainer.style.display = 'none';
+        return;
+    }
+    
+    fetch(`/search?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+            resultsContainer.innerHTML = '';
+            
+            if (data.results.length > 0) {
+                data.results.forEach(course => {
+                    const item = document.createElement('a');
+                    item.href = `/course/${course.course_id}`;
+                    item.className = 'dropdown-item p-3';
+                    item.innerHTML = `
+                        <strong>${course.course_title}</strong>
+                        <br>
+                        <small class="text-muted">${course.course_organization} • Rating: ${course.course_rating}</small>
+                    `;
+                    resultsContainer.appendChild(item);
+                });
+                resultsContainer.style.display = 'block';
+            } else {
+                resultsContainer.innerHTML = '<div class="dropdown-item p-3 text-muted">No courses found</div>';
+                resultsContainer.style.display = 'block';
+            }
+        });
+});
+
+document.getElementById('search-button').addEventListener('click', function() {
+    const query = document.getElementById('course-search').value;
+    if (query.trim()) {
+        window.location.href = `/browse?q=${encodeURIComponent(query)}`;
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,22 @@
+# Virtual environment
+venv/
+Include/
+Lib/
+Scripts/
+pyvenv.cfg
+
+# Cache and logs
+cache_directory/
+flask_session/
+*.log
+model_check.log
+app.log
+
+# Database
+users.db
+
+# IDE/system files
+.DS_Store
+.idea/
+__pycache__/
+*.py[cod]

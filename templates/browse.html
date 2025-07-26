@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Browse All Courses</h1>
+    
+    {% if request.args.get('q') %}
+    <div class="alert alert-info">
+        Showing results for: <strong>{{ request.args.get('q') }}</strong>
+    </div>
+    {% endif %}
+    
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for course in courses %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course['course_title'] }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ course['course_organization'] }}</h6>
+                    <div class="mb-2">
+                        <span class="badge bg-info text-dark">{{ course['course_difficulty'] }}</span>
+                        <span class="badge bg-warning text-dark">★ {{ course['course_rating']|round(1) }}</span>
+                    </div>
+                    <p class="card-text text-truncate">{{ course['course_description'] }}</p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{{ url_for('course_detail', course_id=course['course_id']) }}" class="btn btn-sm btn-info">View Details</a>
+                    <a href="{{ course['course_url'] }}" class="btn btn-sm btn-primary" target="_blank">Visit Course</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('browse_courses', page=page-1, q=request.args.get('q')) }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            {% for p in range(1, total_pages+1) %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for('browse_courses', page=p, q=request.args.get('q')) }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+            
+            {% if page < total_pages %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('browse_courses', page=page+1, q=request.args.get('q')) }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Your Personalized Recommendations</h1>
+    
+    {% if recommendations|length == 0 %}
+    <div class="alert alert-info">
+        We don't have enough information to provide personalized recommendations yet. 
+        Here are some popular courses you might like:
+    </div>
+    {% endif %}
+    
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for course in recommendations %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course['title'] }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ course['organization'] }}</h6>
+                    <div class="mb-2">
+                        <span class="badge bg-info text-dark">{{ course['difficulty'] }}</span>
+                        <span class="badge bg-warning text-dark">★ {{ course['rating']|round(1) }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{{ url_for('course_detail', course_id=course['id']) }}" class="btn btn-sm btn-info">View Details</a>
+                    <a href="{{ course['url'] }}" class="btn btn-sm btn-primary" target="_blank">Visit Course</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
